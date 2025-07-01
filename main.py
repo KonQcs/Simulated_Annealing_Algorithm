@@ -2,13 +2,13 @@ import math
 import random
 from collections import namedtuple
 
-
+#δομή block
 Block = namedtuple('Block', ['id', 'width', 'height'])
 
 #εκφραση
 E = ['10', '9', 'H', '2', '5', 'V', '1', 'H', '3', '7', '4', 'V', 'H', '6', 'V', '8', 'V', 'H', 'V']
 
-#τυχαια x, y για καθε block
+# x, y για καθε block
 blocks = {
     str(1): Block(id=1, width=3, height=2),
     str(2): Block(id=2, width=1, height=1),
@@ -22,10 +22,9 @@ blocks = {
     str(10): Block(id=10, width=1, height=2)
 }
 
-
 def RandomMove(expr):
     new_expr = expr.copy()
-    move_type = random.randint(1, 4)  # Επιλέγουμε μία από τις 4 κινήσεις
+    move_type = random.randint(1, 4)  #choose random move 1,2,3,4
 
     if move_type == 1:
         # Ανταλλαγή δύο τελεστών
@@ -42,7 +41,7 @@ def RandomMove(expr):
         new_expr[start:end] = sub
 
     elif move_type == 3:
-        #αλλαγη e(i) -- e(i+1)
+        #αλλαγή e(i) -- e(i+1)
         for i in range(1, len(expr) - 1):
             ei = expr[i]
             if ei not in ['H', 'V']:
@@ -63,19 +62,26 @@ def RandomMove(expr):
 
     return new_expr
 
-
-
 def IsValid(expr):
     count = 0
-    for token in expr:
-        if token not in ['H', 'V']:
-            count += 1
-        else:
+    for i in range(len(expr)):
+        token = expr[i]
+
+        # διαδοχικά H ή V
+        if i < len(expr) - 1:
+            if token in ['H', 'V'] and token == expr[i + 1]:
+                return False
+
+        #ισορροπίας
+        if token in ['H', 'V']:
             count -= 1
+        else:
+            count += 1
+
         if count < 1:
             return False
-    return True
 
+    return True
 
 def EvaluateArea(expr):
     stack = []
@@ -95,9 +101,6 @@ def EvaluateArea(expr):
             stack.append((w, h))
     final_w, final_h = stack[0]
     return final_w * final_h
-
-
-
 
 def EvaluateP(d):
     negd = d - 2*d
