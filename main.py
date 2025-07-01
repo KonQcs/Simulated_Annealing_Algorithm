@@ -95,7 +95,7 @@ def EvaluateArea(expr):
             if token == 'H':
                 w = max(b1[0], b2[0])
                 h = b1[1] + b2[1]
-            else:  # Κάθετη: πλάτη προστίθενται
+            else:  #if V
                 w = b1[0] + b2[0]
                 h = max(b1[1], b2[1])
             stack.append((w, h))
