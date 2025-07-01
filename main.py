@@ -130,3 +130,6 @@ while T > limit:
             break
 
 print(Best,'\t', BestArea,'\t', repeats)
+
+with open("results.txt", "a") as file:
+    file.write(f"{Best}\t{BestArea}\t{repeats}\n")
