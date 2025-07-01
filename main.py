@@ -10,8 +10,16 @@ E = ['10', '9', 'H', '2', '5', 'V', '1', 'H', '3', '7', '4', 'V', 'H', '6', 'V',
 
 #τυχαια x, y για καθε block
 blocks = {
-    str(i): Block(id=str(i), width=random.randint(1, 5), height=random.randint(1, 5))
-    for i in range(1, 10)
+    str(1): Block(id=1, width=3, height=2),
+    str(2): Block(id=2, width=1, height=1),
+    str(3): Block(id=3, width=4, height=1),
+    str(4): Block(id=4, width=3, height=1),
+    str(5): Block(id=5, width=1, height=5),
+    str(6): Block(id=6, width=1, height=2),
+    str(7): Block(id=7, width=5, height=1),
+    str(8): Block(id=8, width=1, height=3),
+    str(9): Block(id=9, width=6, height=1),
+    str(10): Block(id=10, width=1, height=2)
 }
 
 
@@ -97,12 +105,7 @@ def EvaluateP(d):
     return p
 
 
-
-
-
-
 Best = E
-
 BestArea = EvaluateArea(E)
 #Temperture
 T = 100
@@ -119,7 +122,7 @@ while T > limit:
         if delta < 0 or random.random() < EvaluateP(delta):
             E = NE
             if area < BestArea:
-                best = NE
+                Best = NE
                 BestArea = area
         T *= r
         repeats += 1
