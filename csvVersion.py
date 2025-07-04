@@ -2,6 +2,8 @@ import math
 import random
 from collections import namedtuple
 import csv
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 
 def generate_NPE(n):
@@ -10,18 +12,23 @@ def generate_NPE(n):
     expr = []
     stack_depth = 0
 
-    random.shuffle(block_ids)  # ανακάτεμα των blocks
+    random.shuffle(block_ids)
+    last_token = None  #
 
     while block_ids or stack_depth > 1:
-        # πάντα το πρώτο token πρέπει να είναι block
         if block_ids and (stack_depth < 2 or random.random() < 0.7):
-            expr.append(block_ids.pop())
+            token = block_ids.pop()
+            expr.append(token)
+            last_token = token
             stack_depth += 1
         else:
-            op = random.choice(operators)
+            possible_ops = [op for op in operators if op != last_token]
+            op = random.choice(possible_ops)
             expr.append(op)
-            stack_depth -= 1  # 2 στοιχεία γίνονται 1
+            last_token = op
+            stack_depth -= 1
     return expr
+
 
 def RandomMove(expr):
     new_expr = expr.copy()
@@ -108,25 +115,110 @@ def EvaluateP(d):
     p = math.exp( negd / T )
     return p
 
-#δομή block
-Block = namedtuple('Block', ['id', 'width', 'height'])
+def evaluate_polish_expression(expr, blocks_dict):
+    stack = []
+
+    for token in expr:
+        if token not in ('H', 'V'):
+            block = blocks_dict[token]
+            stack.append({
+                'id': token,
+                'width': block.width,
+                'height': block.height,
+                'x': 0,
+                'y': 0,
+                'children': []
+            })
+        else:
+            b2 = stack.pop()
+            b1 = stack.pop()
+
+            if token == 'H':
+                width = max(b1['width'], b2['width'])
+                height = b1['height'] + b2['height']
+
+                b2['y'] = b1['height']
+                b2['x'] = 0
+                b1['x'] = 0
+                b1['y'] = 0
+
+            elif token == 'V':
+                width = b1['width'] + b2['width']
+                height = max(b1['height'], b2['height'])
+
+                b2['x'] = b1['width']
+                b2['y'] = 0
+                b1['x'] = 0
+                b1['y'] = 0
+
+            parent = {
+                'id': f"({b1['id']}{token}{b2['id']})",
+                'width': width,
+                'height': height,
+                'x': 0,
+                'y': 0,
+                'children': [b1, b2]
+            }
+
+            stack.append(parent)
+
+    return stack[0]  # root block
+
+def draw_block(block, offset_x=0, offset_y=0, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots()
+
+    x = offset_x + block['x']
+    y = offset_y + block['y']
+    w = block['width']
+    h = block['height']
+
+    if not block['children']:  # leaf block
+        facecolor = block_colors[block['id']]
+    else:
+        facecolor = 'white'
+
+    ax.add_patch(plt.Rectangle((x, y), w, h,
+                               facecolor=facecolor,
+                               edgecolor='black',
+                               linewidth=0.8))
+    for child in block.get('children', []):
+        draw_block(child, offset_x + block['x'], offset_y + block['y'], ax=ax)
+    return ax
+
+def random_color():
+    colors = list(mcolors.CSS4_COLORS.values())
+    return random.choice(colors)
+
 
 #πληθος block
-n = 20
+n = 10
+
+#δομή block
+Block = namedtuple('Block', ['id', 'width', 'height'])
+block_colors = {str(i): random_color() for i in range(1, n+1)}
 
 #εκφραση
 E = generate_NPE(n)
-print(E, '\n')
+
 # x, y για καθε block
 blocks = {}
 with open('blocks.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        bid = int(row['id'])
-        blocks[str(bid)] = Block(bid, int(row['width']), int(row['height']))
+        block_id = int(row['id'])
+        blocks[str(block_id)] = Block(block_id, int(row['width']), int(row['height']))
 
-
+print(E, '\n')
 Best = E
+# Εκτίμηση της αρχικής διάταξης
+layout = evaluate_polish_expression(Best, blocks)
+# Σχεδίαση
+ax = draw_block(layout)
+plt.title("First Floorplan")
+plt.axis('equal')
+plt.show()
+
 BestArea = EvaluateArea(E)
 #Temperture
 T = 100
@@ -145,12 +237,20 @@ while T > limit:
             if area < BestArea:
                 Best = NE
                 BestArea = area
-        T *= r
+            T *= r
         repeats += 1
-        if repeats > 100000:  # ασφάλεια για άπειρους βρόχους
-            break
+        #if repeats > 100000:  # ασφάλεια για άπειρους βρόχους
+         #   break
 
 print(Best,'\t', BestArea,'\t', repeats)
 
-with open("results.txt", "a") as file:
+with open("csvVersion_results.txt", "a") as file:
     file.write(f"{Best}\t{BestArea}\t{repeats}\n")
+
+# Εκτίμηση της τελικής διάταξης
+layout = evaluate_polish_expression(Best, blocks)
+
+ax = draw_block(layout)
+plt.title("Final Floorplan")
+plt.axis('equal')
+plt.show()
