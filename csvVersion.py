@@ -4,7 +4,7 @@ from collections import namedtuple
 import csv
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-
+import time
 
 def generate_NPE(n):
     block_ids = [str(i) for i in range(1, n + 1)]
@@ -28,7 +28,6 @@ def generate_NPE(n):
             last_token = op
             stack_depth -= 1
     return expr
-
 
 def RandomMove(expr):
     new_expr = expr.copy()
@@ -176,7 +175,7 @@ def draw_block(block, offset_x=0, offset_y=0, ax=None):
     if not block['children']:  # leaf block
         facecolor = block_colors[block['id']]
     else:
-        facecolor = 'white'
+        facecolor = '0'
 
     ax.add_patch(plt.Rectangle((x, y), w, h,
                                facecolor=facecolor,
@@ -188,11 +187,13 @@ def draw_block(block, offset_x=0, offset_y=0, ax=None):
 
 def random_color():
     colors = list(mcolors.CSS4_COLORS.values())
-    return random.choice(colors)
+    excluded = {'black'}
+    filtered_colors = [c for c in colors if c.lower() not in excluded]
+    return random.choice(filtered_colors)
 
 
 #πληθος block
-n = 10
+n = 100
 
 #δομή block
 Block = namedtuple('Block', ['id', 'width', 'height'])
@@ -208,7 +209,7 @@ with open('blocks.csv', newline='') as csvfile:
     for row in reader:
         block_id = int(row['id'])
         blocks[str(block_id)] = Block(block_id, int(row['width']), int(row['height']))
-
+print('First NPE:\n')
 print(E, '\n')
 Best = E
 # Εκτίμηση της αρχικής διάταξης
@@ -222,28 +223,38 @@ plt.show()
 BestArea = EvaluateArea(E)
 #Temperture
 T = 100
-r = 0.999
+r = 0.99
+
+
 # New T after each repeat = r*T >>> 0.999*100 = 99.9
 limit =0.1
 repeats = 0
+#rejects = 0
+#MT = 1
 
-while T > limit:
+start = time.time()
+
+while (T > limit)  and (repeats < 999999999):
     NE = RandomMove(E)
     if IsValid(NE):
         area = EvaluateArea(NE)
         delta = area - BestArea
+        #MT += 1
         if delta < 0 or random.random() < EvaluateP(delta):
             E = NE
             if area < BestArea:
                 Best = NE
                 BestArea = area
             T *= r
+        #else: rejects += 1
         repeats += 1
-        #if repeats > 100000:  # ασφάλεια για άπειρους βρόχους
-         #   break
+        #if repeats > 100000: ασφάλεια για άπειρους βρόχους
+            #   break
 
+end = time.time()
+print('[Final NPE]  -> Area  ->  Repeats\n')
 print(Best,'\t', BestArea,'\t', repeats)
-
+print("Running Time:", end - start, "sec")
 with open("csvVersion_results.txt", "a") as file:
     file.write(f"{Best}\t{BestArea}\t{repeats}\n")
 
@@ -254,3 +265,8 @@ ax = draw_block(layout)
 plt.title("Final Floorplan")
 plt.axis('equal')
 plt.show()
+
+
+#για n=10 ολοκληρωνεται στο προγραμμα σε λιγοτερο απο 1 sec
+#για n=100 και n=150 φτανει στο οριο των επαναληψεων και σταματαει, μπορει
+#να εκτελειται και παμω απο μιση ωρα
