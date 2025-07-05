@@ -223,7 +223,7 @@ plt.show()
 BestArea = EvaluateArea(E)
 #Temperture
 T = 100
-r = 0.99
+r = 0.97
 
 
 # New T after each repeat = r*T >>> 0.999*100 = 99.9
@@ -234,7 +234,7 @@ repeats = 0
 
 start = time.time()
 
-while (T > limit)  and (repeats < 999999999):
+while (T > limit)  and (repeats < 99999999):
     NE = RandomMove(E)
     if IsValid(NE):
         area = EvaluateArea(NE)
@@ -269,4 +269,4 @@ plt.show()
 
 #για n=10 ολοκληρωνεται στο προγραμμα σε λιγοτερο απο 1 sec
 #για n=100 και n=150 φτανει στο οριο των επαναληψεων και σταματαει, μπορει
-#να εκτελειται και πανω απο μιση ωρα, μπορει και 1 ωρα απλα δεν ειχα υπομονη να περιμενω
+#να εκτελειται και παμω απο μιση ωρα
