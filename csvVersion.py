@@ -223,13 +223,13 @@ plt.show()
 BestArea = EvaluateArea(E)
 #Temperture
 T = 100
-r = 0.97
+r = 0.995
 
 
 # New T after each repeat = r*T >>> 0.999*100 = 99.9
 limit =0.1
 repeats = 0
-#rejects = 0
+rejects = 0
 #MT = 1
 
 start = time.time()
@@ -245,18 +245,19 @@ while (T > limit)  and (repeats < 99999999):
             if area < BestArea:
                 Best = NE
                 BestArea = area
-            T *= r
-        #else: rejects += 1
+        T *= r
+        else: rejects += 1 #αθροιστης των εκφρασεων που αποριπτονται ωστε οταν βρεθουμε σε σημειο με πολλες αποριψεις να αυξησουμε το Τ
         repeats += 1
-        #if repeats > 100000: ασφάλεια για άπειρους βρόχους
-            #   break
+        if rejects > 100
+            T += 5
+            rejects = 0
 
 end = time.time()
 print('[Final NPE]  -> Area  ->  Repeats\n')
 print(Best,'\t', BestArea,'\t', repeats)
 print("Running Time:", end - start, "sec")
 with open("csvVersion_results.txt", "a") as file:
-    file.write(f"{Best}\t{BestArea}\t{repeats}\n")
+    file.write(f"{Best}\t{BestArea}\t{repeats}\t{end}-{start}"sec"\n")
 
 # Εκτίμηση της τελικής διάταξης
 layout = evaluate_polish_expression(Best, blocks)
