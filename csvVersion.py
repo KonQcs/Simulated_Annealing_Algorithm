@@ -234,7 +234,7 @@ rejects = 0
 
 start = time.time()
 
-while (T > limit)  and (repeats < 99999999):
+while (T > limit)  and (repeats < 999999999):
     NE = RandomMove(E)
     if IsValid(NE):
         area = EvaluateArea(NE)
@@ -245,19 +245,21 @@ while (T > limit)  and (repeats < 99999999):
             if area < BestArea:
                 Best = NE
                 BestArea = area
-        T *= r
         else: rejects += 1 #αθροιστης των εκφρασεων που αποριπτονται ωστε οταν βρεθουμε σε σημειο με πολλες αποριψεις να αυξησουμε το Τ
-        repeats += 1
-        if rejects > 100
+
+        T *= r
+
+        if rejects > 100:
             T += 5
             rejects = 0
+    repeats += 1
 
 end = time.time()
 print('[Final NPE]  -> Area  ->  Repeats\n')
 print(Best,'\t', BestArea,'\t', repeats)
 print("Running Time:", end - start, "sec")
 with open("csvVersion_results.txt", "a") as file:
-    file.write(f"{Best}\t{BestArea}\t{repeats}\t{end}-{start}"sec"\n")
+    file.write(f"{Best}\t{BestArea}\t{repeats}\t\n")
 
 # Εκτίμηση της τελικής διάταξης
 layout = evaluate_polish_expression(Best, blocks)
@@ -270,4 +272,4 @@ plt.show()
 
 #για n=10 ολοκληρωνεται στο προγραμμα σε λιγοτερο απο 1 sec
 #για n=100 και n=150 φτανει στο οριο των επαναληψεων και σταματαει, μπορει
-#να εκτελειται και παμω απο μιση ωρα
+#να εκτελειται και σχεδον μιαα μερα
