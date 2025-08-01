@@ -31,15 +31,17 @@ def generate_NPE(n):
 
 def RandomMove(expr):
     new_expr = expr.copy()
-    move_type = random.randint(1, 4)  #choose random move 1,2,3,4
+    move_type = random.randint(1, 10)  #choose random move 1,2,3,4
+    #να διαλεξω βαρρος max mid low
+    #0,5 0,2 0,2 0,1 εναλλαξ
 
-    if move_type == 1:
+    if move_type in [1,2]:
         # Ανταλλαγή δύο τελεστών
         i = random.randint(0, len(expr) - 2)
         if (expr[i] in ['H', 'V'] and expr[i + 1] in ['H', 'V']) or (expr[i] not in ['H', 'V'] and expr[i + 1] not in ['H', 'V']):
             new_expr[i], new_expr[i + 1] = new_expr[i + 1], new_expr[i]
 
-    elif move_type == 2:
+    elif move_type in [3,4]:
         # Αντιστροφή αλυσίδας
         start = random.randint(0, len(expr) - 3)
         end = random.randint(start + 2, len(expr) - 1)
@@ -47,7 +49,7 @@ def RandomMove(expr):
         sub.reverse()
         new_expr[start:end] = sub
 
-    elif move_type == 3:
+    elif move_type in [5]:
         #αλλαγή e(i) -- e(i+1)
         for i in range(1, len(expr) - 1):
             ei = expr[i]
@@ -58,7 +60,7 @@ def RandomMove(expr):
                     new_expr[i], new_expr[i + 1] = new_expr[i + 1], new_expr[i]
                     break
 
-    elif move_type == 4:
+    elif move_type in [6,7,8,9,10]:
         #ανταλλαγή width - height
         operand_indices = [i for i, token in enumerate(expr) if token not in ['H', 'V']]
         if operand_indices:
@@ -193,14 +195,14 @@ def random_color():
 
 
 #πληθος block
-n = 100
+n = 10
 
 #δομή block
 Block = namedtuple('Block', ['id', 'width', 'height'])
 block_colors = {str(i): random_color() for i in range(1, n+1)}
 
 #εκφραση
-E = generate_NPE(n)
+E = ['7','6','2','3','4','1','H','V','9','8','H','10','5','V','H','V','H','V','H'] #generate_NPE(n)
 
 # x, y για καθε block
 blocks = {}
@@ -209,8 +211,8 @@ with open('blocks.csv', newline='') as csvfile:
     for row in reader:
         block_id = int(row['id'])
         blocks[str(block_id)] = Block(block_id, int(row['width']), int(row['height']))
-print('First NPE:\n')
-print(E, '\n')
+print('First NPE and Area:\n')
+print(E, '\t')
 Best = E
 # Εκτίμηση της αρχικής διάταξης
 layout = evaluate_polish_expression(Best, blocks)
@@ -221,20 +223,22 @@ plt.axis('equal')
 plt.show()
 
 BestArea = EvaluateArea(E)
-#Temperture
+print(BestArea)
+#Temperture 10 100 150 5Ε για το καθενα
 T = 100
-r = 0.995
+r = 0.999 #0.999 0.995 0.991
+
 
 
 # New T after each repeat = r*T >>> 0.999*100 = 99.9
-limit =0.1
+limit =0.01
 repeats = 0
 rejects = 0
 #MT = 1
 
 start = time.time()
 
-while (T > limit)  and (repeats < 999999999):
+while (T > limit)  and (repeats < 9000000):
     NE = RandomMove(E)
     if IsValid(NE):
         area = EvaluateArea(NE)
