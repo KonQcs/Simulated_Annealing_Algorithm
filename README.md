@@ -2,7 +2,7 @@
 -
 Με την χρήση εξελεικτικού αλγορίθμου θα προσπαθήσω να βρω ή να πλησιάσω το βέλτιστο εμβαδόν ενός chip το οποίο περιέχει Ν αριθμό από blocks με fixed διαστάσεις (width, hight).
 -
-~ Αρχικά έχει υλοποιηθεί αλγόριθμος που δέχεται ένα Normalised Polish Expression με 10 τέτοια blocks
+~ Έχει υλοποιηθεί αλγόριθμος που δέχεται ένα Normalised Polish Expression με 10,100,150 τέτοια blocks
 -
 ~ Επιλέγει μεταξύ τεσσάρων τυχαίων αλλαγών που μπορεί να κάνει στην έκφραση ώστε να μειώσει το συνολικό εμβαδόν του συνολικού τετραγώνου
 -
@@ -11,11 +11,12 @@
 -- [ΕΚΦΡΑΣΗ] ΕΜΒΑΔΟΝ ΕΠΑΝΑΛΗΨΕΙΣ --
 
 -
-ΤΕΛΙΚΑ ΓΡΑΦΗΜΑΤΑ
+--ΤΕΛΙΚΑ ΓΡΑΦΗΜΑΤΑ
 -
 
-ΓΙΑ 10 BLOCKS
-
+-
+--ΓΙΑ 10 BLOCKS
+-
 
 <img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/c38c4cb9-d022-451b-87e2-57e42b5cbe95" />
 
@@ -25,24 +26,26 @@
 
 <img width="1275" height="761" alt="image" src="https://github.com/user-attachments/assets/618e171a-8712-4bc6-aeb9-5e9c6a3355d3" />
 
+-
+--ΓΙΑ 100 BLOCKS
+-
 
-ΓΙΑ 100 BLOCKS
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/0e466651-5964-482a-9897-646be4003e64" />
 
-<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/9a78d346-462e-4a0b-a370-69179f2fbc8e" />
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/8244e50d-6735-4454-81ec-3c4fedab59d9" />
 
-<img width="2733" height="783" alt="image" src="https://github.com/user-attachments/assets/3a1e8c26-8d5c-488a-9f0f-a0cd31bf43e6" />
-
-<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/58159de1-4d4d-4849-a965-01093f02ed4d" />
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/075e212c-8a0d-403e-b45c-bd4d160fc75c" />
 
 <img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/9d06c323-66ef-4101-8073-baa54a7cd61c" />
 
+-
+--ΓΙΑ 150 BLOCKS
+-
 
-ΓΙΑ 150 BLOCKS
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/ca7cdfb8-c8d2-4535-b277-e38d0cf36a6f" />
 
-<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/80cea19c-12c4-44c5-888a-f0e45ea7a50d" />
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/12c687b2-afd7-4caf-a2e2-bcdb8e614f15" />
 
-<img width="2746" height="760" alt="image" src="https://github.com/user-attachments/assets/c23568be-a7f0-4fcf-94cd-5670a7cee06f" />
-
-<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/8fb87042-a930-4152-ba1c-aadfc7179361" />
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/b5c9a073-1bb3-4308-883e-a9ae309a1d27" />
 
 <img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/49e87602-ab31-4398-a038-243d29ed466b" />
