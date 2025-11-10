@@ -10,3 +10,6 @@
 -
 -- [ΕΚΦΡΑΣΗ] ΕΜΒΑΔΟΝ ΕΠΑΝΑΛΗΨΕΙΣ --
 -
+																											
+
+<img width="1275" height="760" alt="image" src="https://github.com/user-attachments/assets/307ac7de-f153-4b22-ae88-35c8d1c79dd0" />
